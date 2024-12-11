@@ -21,6 +21,9 @@ void initLed() {
 }
 
 
-bool toggleLed() {
+bool toggleLed(char side) {
+  switch(side){
+    
+  }
 
 }

@@ -20,7 +20,7 @@ bool setupSensor() {
 
   delay(10);
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 1; i++) {
     digitalWrite(xshut[i], HIGH);
     delay(10);
 
@@ -35,4 +35,24 @@ bool setupSensor() {
     firstI2cAddr++;
   }
 }
+
+bool fetchData() {
+  VL53L0X_RangingMeasurementData_t measure;
+
+  // Read data from all sensors
+  for (int i = 0; i < 1; i++) {
+    Serial.print("sensor1");
+    lox[i]->rangingTest(&measure, false);
+
+    if (measure.RangeStatus != 4) {
+      Serial.print("Distance (mm): ");
+      Serial.println(measure.RangeMilliMeter);
+    } else {
+      Serial.println("Out of range");
+    }
+  }
+
+  delay(100);
+}
+
 
