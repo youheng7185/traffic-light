@@ -10,7 +10,7 @@
 Adafruit_VL53L0X* lox[6];
 
 int xshut[6] = {XSHUT1, XSHUT2, XSHUT3, XSHUT4, XSHUT5, XSHUT6};
-int firstI2cAddr = 0x30;
+int firstI2cAddr = 0x69;
 
 bool setupSensor() {
   for (int i = 0; i < 6; i++) {

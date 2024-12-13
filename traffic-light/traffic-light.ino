@@ -1,4 +1,5 @@
 #include "sensor.h"
+#include "test_sensor.h"
 
 void setup() {
   // put your setup code here, to run once:
@@ -6,11 +7,15 @@ void setup() {
 
   delay(1000);
   Serial.print("done");
-  setupSensor();
+  //setupSensor();
+  setupFakeSensor();
 
 }
 void loop() {
   // put your main code here, to run repeatedly:
-  fetchData();
+  //fetchData();
+  //readFakeData();
+  countCar();
+  delay(100);
 }
 
