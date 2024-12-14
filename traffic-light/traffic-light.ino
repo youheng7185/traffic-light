@@ -1,9 +1,11 @@
 #include "sensor.h"
 #include "test_sensor.h"
+#include "led.h"
 #include <Arduino_FreeRTOS.h>
 #include <queue.h>
 
 QueueHandle_t carQueue;
+TaskHandle_t trafficLightTaskHandle = NULL;
 
 void setup() {
   // put your setup code here, to run once:
@@ -20,6 +22,7 @@ void setup() {
   // Create the car counting task
   xTaskCreate(countCarTask, "CountCar", 128, NULL, 1, NULL);
   xTaskCreate(processCarCountTask, "ProcessCarCount", 128, NULL, 1, NULL);
+  xTaskCreate(trafficLightTask, "TrafficLightTask", 128, NULL, 1, &trafficLightTaskHandle);
 
   // Start the scheduler
   vTaskStartScheduler();
