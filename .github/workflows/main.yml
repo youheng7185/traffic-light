@@ -57,6 +57,11 @@ jobs:
         run: |
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.arduino-platform }}
+
+      # install required library
+      - name: Install library
+        run: arduino-cli lib install --git-url https://github.com/feilipu/Arduino_FreeRTOS_Library.git https://github.com/adafruit/Adafruit_VL53L0X.git
+        
       # Finally, we compile the sketch, using the FQBN that was set
       # in the build matrix.
       - name: Compile Sketch
