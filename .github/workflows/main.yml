@@ -57,13 +57,10 @@ jobs:
         run: |
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.arduino-platform }}
-
-      - name: Export variable
-        run: export ARDUINO_LIBRARY_ENABLE_UNSAFE_INSTALL=true
         
       # install required library
       - name: Install library
-        run: arduino-cli lib install --git-url https://github.com/feilipu/Arduino_FreeRTOS_Library.git https://github.com/adafruit/Adafruit_VL53L0X.git
+        run: arduino-cli lib install Arduino_FreeRTOS Adafruit_VL53L0X
         
       # Finally, we compile the sketch, using the FQBN that was set
       # in the build matrix.
