@@ -60,7 +60,7 @@ jobs:
         
       # install required library
       - name: Install library
-        run: arduino-cli lib install Arduino_FreeRTOS Adafruit_VL53L0X
+        run: arduino-cli lib install FreeRTOS Adafruit_VL53L0X
         
       # Finally, we compile the sketch, using the FQBN that was set
       # in the build matrix.
