@@ -1,0 +1,77 @@
+#include "Adafruit_VL53L0X.h"
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+
+// Threshold distance in centimeters to detect a car
+const int carDetectionThreshold = 20;
+
+// Time threshold in milliseconds to confirm car detection
+const unsigned long detectionTimeThreshold = 200;
+
+bool carDetected = false;
+int carCount = 0;
+unsigned long carDetectionStartTime = 0;
+
+// Function to detect and count cars
+void calculateCar(double distance) {
+  if (distance < carDetectionThreshold) {
+    // If detection starts, record the time
+    if (!carDetected) {
+      carDetectionStartTime = millis();
+      carDetected = true;
+    }
+    // Check if the car has been in the detection zone long enough
+    if (millis() - carDetectionStartTime >= detectionTimeThreshold) {
+      carCount++;
+      Serial.print("Car detected! Total cars passed: ");
+      Serial.println(carCount);
+
+      // Wait until the car leaves the detection zone to avoid multiple counts
+      while (true) {
+        VL53L0X_RangingMeasurementData_t measure;
+        lox.rangingTest(&measure, false);
+        int currentDistance = measure.RangeMilliMeter / 10;  // Convert to cm
+
+        if (currentDistance >= carDetectionThreshold) {
+          break;  // Exit the loop when the car leaves the detection zone
+        }
+        delay(50);  // Small delay to avoid excessive readings
+      }
+      carDetected = false;
+    }
+  } else {
+    // Reset detection if the car leaves the detection zone
+    carDetected = false;
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  Wire.begin(5, 4);
+  if (!lox.begin()) {
+    Serial.println("Failed to initialize VL53L0X sensor!");
+    while (1);
+  }
+  Serial.println("VL53L0X sensor initialized.");
+}
+
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure;
+
+  // Measure distance
+  lox.rangingTest(&measure, false);
+
+  if (measure.RangeStatus != 4) {  // If measurement is valid
+    double distance = measure.RangeMilliMeter / 10;  // Convert to cm
+    Serial.print("Distance: ");
+    Serial.print(distance);
+    Serial.println(" mm");
+
+    // Call the function to calculate car count
+    calculateCar(distance);
+  } else {
+    Serial.println("Out of range");
+  }
+
+  delay(100);  // Small delay to stabilize readings
+}
