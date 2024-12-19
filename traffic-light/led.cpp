@@ -56,6 +56,9 @@ bool green(int road) {
       digitalWrite(CY, LOW);
       digitalWrite(CR, HIGH);
       digitalWrite(AG, HIGH); // now let a go
+      digitalWrite(AY, LOW);
+      digitalWrite(AR, LOW);
+      Serial.println("current road A");
       break;
     case 1:
       turnOffAll();
@@ -66,6 +69,9 @@ bool green(int road) {
       digitalWrite(AY, LOW);
       digitalWrite(AR, HIGH);
       digitalWrite(BG, HIGH); // let b go
+      digitalWrite(BY, LOW);
+      digitalWrite(BR, LOW);
+      Serial.println("current road B");
       break;
     case 2:
       turnOffAll();
@@ -76,6 +82,9 @@ bool green(int road) {
       digitalWrite(BY, LOW);
       digitalWrite(BR, HIGH);
       digitalWrite(CG, HIGH); // let c go
+      digitalWrite(CY, LOW);
+      digitalWrite(CR, LOW);
+      Serial.println("current road C");
       break;
     default:
       Serial.println("program should not reach here");
@@ -90,7 +99,19 @@ bool turnOffAll() {
 }
 
 bool toggleLight() {
-  Serial.println("Resuming traffic light task...");
-  vTaskResume(trafficLightTaskHandle);
-  // todo if task resume success pls return true
+  if (trafficLightTaskHandle != NULL) {
+    Serial.println("Resuming traffic light task...");
+    vTaskResume(trafficLightTaskHandle);
+    return true;  // Task resumed successfully
+  }
+  Serial.println("Failed to resume task.");
+  return false;  // Task handle is invalid
+}
+
+void switchTraffic(void *pvParameters) {
+  while(1) {
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
+    toggleLight();
+    Serial.println("traffic light toggle");
+  }
 }

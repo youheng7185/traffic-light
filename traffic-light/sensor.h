@@ -1,6 +1,7 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
+#include "Wire.h"
 #define VL53L0X_OUT_OF_RANGE (8190)
 
 // single sensor

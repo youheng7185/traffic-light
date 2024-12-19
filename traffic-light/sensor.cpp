@@ -33,8 +33,8 @@
 #define GPIO_XSHUT_SECOND A1
 #define GPIO_XSHUT_THIRD A2
 #define GPIO_XSHUT_FOURTH A3
-#define GPIO_XSHUT_FIFTH 2
-#define GPIO_XSHUT_SIXTH 3
+#define GPIO_XSHUT_FIFTH 13
+#define GPIO_XSHUT_SIXTH 12
 
 static uint8_t stop_variable = 0;
 
