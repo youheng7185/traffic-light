@@ -1,4 +1,5 @@
 #include "sensor.h"
+#include "led.h"
 #include <Arduino_FreeRTOS.h>
 #include <Arduino.h>
 
@@ -20,6 +21,11 @@ void countCarTaskTOF(void *pvParameters) {
       if(count == 7) {
         count = 1;
       }
+    }
+
+    if (range < 100) {
+      //toggleLight();
+      vTaskResume(trafficLightTaskHandle);
     }
 
     unsigned long endTime = millis(); // Record the end time of the loop

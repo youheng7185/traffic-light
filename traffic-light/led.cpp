@@ -109,6 +109,7 @@ bool toggleLight() {
 }
 
 void switchTraffic(void *pvParameters) {
+  Serial.println("switch traffic task initilised");
   while(1) {
     vTaskDelay(5000 / portTICK_PERIOD_MS);
     toggleLight();
