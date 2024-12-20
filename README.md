@@ -11,18 +11,16 @@ This program is written for a T-junction with junction A, B and C.
 
 Switch the side to green light with a function call:
 ```
-bool toggleLight();
+vTaskResume(trafficLightTaskHandle);
 ```
 
-Get the number of car in each junction:
+## Todos:
 
-Refer processCarCountTask function, and use
+vTaskResume shouldnt be called when the traffic light is transitioning
 
-```
-xQueueReceive(carQueue, &carCount, portMAX_DELAY);
-```
+Create new task to write traffic light algorithm or just write on the countCarTaskTOF
 
-
+value range is the distance measured by the sensor in millimeter
 
 
 
@@ -32,9 +30,6 @@ xQueueReceive(carQueue, &carCount, portMAX_DELAY);
 To deploy this project, open in Arduino IDE and install library below:
 
 * FreeRTOS by Richard Barry
-
-* Adafruit_VL53L0X
-
 
 ## Pinout
 
