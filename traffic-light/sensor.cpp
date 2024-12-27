@@ -1,3 +1,5 @@
+// Library is ported from https://github.com/artfulbytes/vl6180x_vl53l0x_msp430/tree/main
+
 #include <Arduino.h>
 #include <Wire.h>
 #include "sensor.h"

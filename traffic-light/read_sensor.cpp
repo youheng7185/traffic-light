@@ -21,12 +21,6 @@ void countCarTaskTOF(void *pvParameters) {
 
     for (int idx = VL53L0X_IDX_FIRST; idx <= VL53L0X_IDX_SIXTH; ++idx) {
       vl53l0x_read_range_single(idx, range);
-      // Read and print range for the first sensor
-      //convertValue(VL53L0X_IDX_FIRST, rangeVal);
-      // Serial.print("Sensor ");
-      // Serial.print(count);
-      // Serial.print(": ");
-      // Serial.println(range);
 
       if (range < car_threshold)
       {
@@ -62,8 +56,6 @@ void countCarTaskTOF(void *pvParameters) {
       vTaskResume(trafficLightTaskHandle);
       startTime = millis();
       roadToGo = (roadToGo + 1) % 3;
-      // Serial.print("Switching to road ");
-      // Serial.println(roadToGo + 1);
     }
 
     vTaskDelay(100 / portTICK_PERIOD_MS);

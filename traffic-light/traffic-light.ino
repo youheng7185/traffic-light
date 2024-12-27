@@ -13,9 +13,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Wire.setClock(100000);
-  //delay(1000);
-  //Serial.print("done");
-  //setupSensor();
+
   setupFakeSensor();
   initLed();
   if(!vl53l0x_init()){
@@ -25,19 +23,11 @@ void setup() {
     Serial.println("success init multiple sensor");
   }
 
-  /*
-  // Create a queue with space for 2 items (for carA and carB)
-  carQueue = xQueueCreate(2, sizeof(int));
-
-  // Create the car counting task
-  xTaskCreate(countCarTask, "CountCar", 128, NULL, 1, NULL);
-  xTaskCreate(processCarCountTask, "ProcessCarCount", 128, NULL, 1, NULL);
-  */
-
+  // start rtos tasks
+  // tasks to count car
   xTaskCreate(countCarTaskTOF, "CountCarTOF", 128, NULL, 1, NULL);
+  // transition of traffic light at the background
   xTaskCreate(trafficLightTask, "TrafficLightTask", 128, NULL, 1, &trafficLightTaskHandle);
-  //xTaskCreate(switchTraffic, "loop traffic light", 128, NULL, 1, NULL);
-
 
   // Start the scheduler
   vTaskStartScheduler();

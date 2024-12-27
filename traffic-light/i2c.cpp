@@ -2,10 +2,10 @@
 #include <Wire.h>
 
 #define DEFAULT_ADD (0x29)
-uint8_t current_address = DEFAULT_ADD; // Global variable to hold the current I2C slave address
+uint8_t current_address = DEFAULT_ADD;
 
 void i2c_set_slave_address(uint8_t addr) {
-  current_address = addr; // Update the global address
+  current_address = addr;
 }
 
 bool i2c_write_addr8_data8(uint8_t address, uint8_t data) {
@@ -25,7 +25,7 @@ bool i2c_read_addr8_data8(uint8_t address, uint8_t &data) {
   Wire.beginTransmission(current_address); // Use the current address
   Wire.write(address);
   if (Wire.endTransmission(false) != 0) { // Send repeated start
-    return false; // Transmission failed
+    return false;
   }
 
   Wire.requestFrom(current_address, (uint8_t)1); // Request 1 byte of data

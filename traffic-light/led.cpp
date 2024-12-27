@@ -3,14 +3,17 @@
 #include <queue.h>
 #include "led.h"
 
+// lane A
 #define AR 2
 #define AY 3
 #define AG 4
 
+// lane B
 #define BR 5
 #define BY 6
 #define BG 7
 
+// lane C
 #define CR 8
 #define CY 9
 #define CG 10
@@ -106,13 +109,4 @@ bool toggleLight() {
   }
   Serial.println("Failed to resume task.");
   return false;  // Task handle is invalid
-}
-
-void switchTraffic(void *pvParameters) {
-  Serial.println("switch traffic task initilised");
-  while(1) {
-    vTaskDelay(5000 / portTICK_PERIOD_MS);
-    toggleLight();
-    Serial.println("traffic light toggle");
-  }
 }
