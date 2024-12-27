@@ -1,5 +1,4 @@
 #include "sensor.h"
-#include "test_sensor.h"
 #include "led.h"
 #include "read_sensor.h"
 #include <Arduino_FreeRTOS.h>
@@ -14,7 +13,6 @@ void setup() {
   Serial.begin(115200);
   Wire.setClock(100000);
 
-  setupFakeSensor();
   initLed();
   if(!vl53l0x_init()){
     Serial.println("fail init multiple sensor");
