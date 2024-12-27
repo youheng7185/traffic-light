@@ -32,7 +32,7 @@ void initLed() {
 void trafficLightTask(void *pvParameters) {
   int currentRoadGo = 2;
   while (1) {
-    if (currentRoadGo != 2) {
+    if (currentRoadGo < 2) {
       currentRoadGo++;
     } else {
       currentRoadGo = 0;
@@ -49,12 +49,12 @@ bool green(int road) {
   switch(road) {
     case 0:
       turnOffAll();
+      digitalWrite(CY, HIGH);
       digitalWrite(BR, HIGH); // keep b stop
       digitalWrite(AR, HIGH); // keep a stop first
-      digitalWrite(CY, HIGH);
       vTaskDelay(1000 / portTICK_PERIOD_MS); // yellow transition 1s
-      digitalWrite(CY, LOW);
       digitalWrite(CR, HIGH);
+      digitalWrite(CY, LOW);
       digitalWrite(AG, HIGH); // now let a go
       digitalWrite(AY, LOW);
       digitalWrite(AR, LOW);
@@ -62,9 +62,9 @@ bool green(int road) {
       break;
     case 1:
       turnOffAll();
-      digitalWrite(CR, HIGH); // keep c stop
-      digitalWrite(BR, HIGH); // keep a stop first
       digitalWrite(AY, HIGH);
+      digitalWrite(CR, HIGH); // keep c stop
+      digitalWrite(BR, HIGH); // keep b stop first
       vTaskDelay(1000 / portTICK_PERIOD_MS); // yellow transition 1s
       digitalWrite(AY, LOW);
       digitalWrite(AR, HIGH);
@@ -75,9 +75,9 @@ bool green(int road) {
       break;
     case 2:
       turnOffAll();
-      digitalWrite(CR, HIGH); // keep b stop
-      digitalWrite(AR, HIGH); // keep a stop first
       digitalWrite(BY, HIGH);
+      digitalWrite(AR, HIGH); // keep a stop
+      digitalWrite(CR, HIGH); // keep c stop first
       vTaskDelay(1000 / portTICK_PERIOD_MS); // yellow transition 1s
       digitalWrite(BY, LOW);
       digitalWrite(BR, HIGH);

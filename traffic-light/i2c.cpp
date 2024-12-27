@@ -28,7 +28,7 @@ bool i2c_read_addr8_data8(uint8_t address, uint8_t &data) {
     return false; // Transmission failed
   }
 
-  Wire.requestFrom(current_address, 1); // Request 1 byte of data
+  Wire.requestFrom(current_address, (uint8_t)1); // Request 1 byte of data
   if (Wire.available()) {
     data = Wire.read(); // Read and return the 8-bit data
     return true;
