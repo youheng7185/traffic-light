@@ -22,8 +22,8 @@ int allLedPins[9] = {AR, AY, AG, BR, BY, BG, CR, CY, CG};
 
 void initLed();
 void trafficLightTask(void *pvParameters);
-bool green(int road);
-bool turnOffAll();
+void green(int road);
+void turnOffAll();
 
 void initLed() {
   for (int i = 0; i < 9; i++) {
