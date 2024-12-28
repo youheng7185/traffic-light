@@ -5,13 +5,13 @@
 #include <Arduino_FreeRTOS.h>
 #include <Arduino.h>
 
-const int car_threshold = 100;
+const int car_threshold = 100; // to be changed accordingly
 const int min_green_time = 5000;
 
 void countCarTaskTOF(void *pvParameters) {
   unsigned long startTime = millis(); // Record the start time of the loop
   unsigned long lastPrintTime = startTime;
-  int car_count[3] = {0, 10, 20};
+  int car_count[3] = {0};
   bool last_state[6] = {0};
 
   int roadToGo = 0;
