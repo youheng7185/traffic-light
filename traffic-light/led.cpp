@@ -48,7 +48,7 @@ void trafficLightTask(void *pvParameters) {
   }
 }
 
-bool green(int road) {
+void green(int road) {
   switch(road) {
     case 0:
       turnOffAll();
@@ -95,7 +95,7 @@ bool green(int road) {
   }
 }
 
-bool turnOffAll() {
+void turnOffAll() {
   for (int i = 0; i < 9; i++) {
     digitalWrite(allLedPins[i], LOW);
   }
