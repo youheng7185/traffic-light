@@ -10,7 +10,6 @@ const int min_green_time = 5000;
 
 void countCarTaskTOF(void *pvParameters) {
   unsigned long startTime = millis(); // Record the start time of the loop
-  unsigned long lastPrintTime = startTime;
   int car_count[3] = {0};
   bool last_state[6] = {0};
 
