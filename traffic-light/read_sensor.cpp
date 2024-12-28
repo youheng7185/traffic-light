@@ -10,6 +10,7 @@ const int min_green_time = 5000;
 
 void countCarTaskTOF(void *pvParameters) {
   unsigned long startTime = millis(); // Record the start time of the loop
+  unsigned long lastPrintTime = startTime;
   int car_count[3] = {0};
   bool last_state[6] = {0};
 
@@ -32,18 +33,16 @@ void countCarTaskTOF(void *pvParameters) {
       else
         last_state[count - 1] = 0;
 
-      Serial.print("Road 1 :");
-      Serial.println(car_count[0]);
-
-      Serial.print("Road 2 :");
-      Serial.println(car_count[1]);
-
-      Serial.print("Road 3 :");
-      Serial.println(car_count[2]);
-
-      Serial.print("Currently at road: ");
-      Serial.println(roadToGo + 1);
-      Serial.println();
+	  if (currentTime - lastPrintTime >= 1000) {
+		Serial.print(currentTime);
+		Serial.print(",");
+		Serial.print(car_count[0]);
+		Serial.print(",");
+		Serial.print(car_count[1]);
+		Serial.print(",");
+		Serial.print(car_count[2]);
+      	Serial.println();
+	  }
 
       count++;
       if(count == 7) {
