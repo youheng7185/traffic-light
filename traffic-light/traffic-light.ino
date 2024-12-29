@@ -5,7 +5,6 @@
 #include <queue.h>
 #include <Wire.h>
 
-QueueHandle_t carQueue;
 TaskHandle_t trafficLightTaskHandle = NULL;
 
 void setup() {
