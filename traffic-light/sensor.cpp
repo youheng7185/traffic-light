@@ -100,29 +100,6 @@ static bool data_init()
     return success;
 }
 
-/**
- * Wait for strobe value to be set. This is used when we read values
- * from NVM (non volatile memory).
- */
-static bool read_strobe()
-{
-    bool success = false;
-    uint8_t strobe = 0;
-    if (!i2c_write_addr8_data8(0x83, 0x00)) {
-        return false;
-    }
-    do {
-        success = i2c_read_addr8_data8(0x83, strobe);
-    } while (success && (strobe == 0));
-    if (!success) {
-        return false;
-    }
-    if (!i2c_write_addr8_data8(0x83, 0x01)) {
-        return false;
-    }
-    return true;
-}
-
 static bool load_default_tuning_settings()
 {
     bool success = i2c_write_addr8_data8(0xFF, 0x01);
