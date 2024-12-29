@@ -48,14 +48,27 @@ void trafficLightTask(void *pvParameters) {
   }
 }
 
+void blink_green(uint8_t pin)
+{
+  for (int i = 0; i < 3; ++i) {
+    digitalWrite(pin, HIGH);
+    vTaskDelay(250/portTICK_PERIOD_MS);
+    digitalWrite(pin, LOW);
+    vTaskDelay(250/portTICK_PERIOD_MS);
+  }
+}
+
 void green(int road) {
   switch(road) {
     case 0:
+      blink_green(CG);
       turnOffAll();
+      // green to yellow
       digitalWrite(CY, HIGH);
       digitalWrite(BR, HIGH); // keep b stop
       digitalWrite(AR, HIGH); // keep a stop first
       vTaskDelay(1000 / portTICK_PERIOD_MS); // yellow transition 1s
+      // green next lane
       digitalWrite(CR, HIGH);
       digitalWrite(CY, LOW);
       digitalWrite(AG, HIGH); // now let a go
@@ -64,6 +77,7 @@ void green(int road) {
       // Serial.println("current road A");
       break;
     case 1:
+      blink_green(AG);
       turnOffAll();
       digitalWrite(AY, HIGH);
       digitalWrite(CR, HIGH); // keep c stop
@@ -77,6 +91,7 @@ void green(int road) {
       // Serial.println("current road B");
       break;
     case 2:
+      blink_green(BG);
       turnOffAll();
       digitalWrite(BY, HIGH);
       digitalWrite(AR, HIGH); // keep a stop

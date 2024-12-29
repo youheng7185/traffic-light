@@ -19,44 +19,44 @@ void countCarTaskTOF(void *pvParameters) {
   while(1) {
     unsigned long currentTime = millis();
     uint16_t range = 0;
-    uint8_t count = 1; // sensor number (1-6)
+    uint8_t sensorNum = 1; // sensor number (1-6)
 
     for (int idx = VL53L0X_IDX_FIRST; idx <= VL53L0X_IDX_SIXTH; ++idx) {
       vl53l0x_read_range_single(idx, range);
 
       if (range < car_threshold) {
-        if (last_state[count - 1] == 0) {
-          if (count % 2)
-            ++car_count[(count - 1) / 2];
-          else
-            --car_count[(count - 1) / 2];
-        car_count[(count - 1) / 2] = max(0, car_count[(count - 1) / 2]);
-        last_state[count - 1] = 1;
+        if (last_state[sensorNum - 1] == 0) {
+          if (sensorNum % 2) // enter road sensor
+            ++car_count[(sensorNum - 1) / 2];
+          else // exit road sensor
+            --car_count[(sensorNum - 1) / 2];
+        car_count[(sensorNum - 1) / 2] = max(0, car_count[(sensorNum - 1) / 2]);
+        last_state[sensorNum - 1] = 1;
         }
       }
       else
-        last_state[count - 1] = 0;
+        last_state[sensorNum - 1] = 0;
 
-	  if (currentTime - lastPrintTime >= 1000) {
-		Serial.print(currentTime);
-		Serial.print(",");
-		Serial.print(car_count[0]);
-		Serial.print(",");
-		Serial.print(car_count[1]);
-		Serial.print(",");
-		Serial.print(car_count[2]);
-      	Serial.println();
-		lastPrintTime = currentTime;
+	  if (currentTime - lastPrintTime >= 100) {
+      Serial.print(currentTime);
+      Serial.print(",");
+      Serial.print(car_count[0]);
+      Serial.print(",");
+      Serial.print(car_count[1]);
+      Serial.print(",");
+      Serial.print(car_count[2]);
+      Serial.println();
+      lastPrintTime = currentTime;
 	  }
 
-      count++;
-      if(count == 7) {
-        count = 1;
+      sensorNum++;
+      if(sensorNum == 7) {
+        sensorNum = 1;
       }
     }
 
     // 6s base + 2s per car, max 30s
-    if (currentTime - startTime > min(100000 + max(0,car_count[roadToGo]) * 20000, 500000) / portTICK_PERIOD_MS) {
+    if (currentTime - startTime > min(min_green_time + max(0, car_count[roadToGo]) * 2000, 30000)) {
       vTaskResume(trafficLightTaskHandle);
       startTime = millis();
       roadToGo = (roadToGo + 1) % 3;
