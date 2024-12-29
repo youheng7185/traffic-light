@@ -348,7 +348,7 @@ static bool init_address(vl53l0x_idx_t idx)
 
     /* The datasheet doesn't say how long we must wait to leave hw standby,
      * but using the same delay as vl6180x seems to work fine. */
-    delay(400);
+    delay(1);
 
     if (!device_is_booted()) {
       Serial.println("device not booted");
