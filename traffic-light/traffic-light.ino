@@ -10,7 +10,7 @@ TaskHandle_t trafficLightTaskHandle = NULL;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  Wire.setClock(100000);
+  Wire.setClock(400000);
 
   initLed();
   if(!vl53l0x_init()){
