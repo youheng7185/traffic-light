@@ -426,29 +426,29 @@ bool vl53l0x_init()
 
 bool setupSensor() {
   if (!device_is_booted()) {
-    Serial.println("Sensor boot check failed.");
+    Serial.println("Sensor boot check failed: 1");
     while (true); // Halt execution
   }
   if(!data_init()) {
-    Serial.println("Sensor boot check failed2");
+    Serial.println("Sensor boot check failed: 2");
     while (true);
   }
   if(!load_default_tuning_settings()) {
-    Serial.println("sensor boot check failed3");
+    Serial.println("sensor boot check failed: 3");
     while (true);
   }
   if(!configure_interrupt()) {
-    Serial.println("sensor boot check failed4");
+    Serial.println("sensor boot check failed: 4");
     while (true);
   }
   if(!set_sequence_steps_enabled(RANGE_SEQUENCE_STEP_DSS +
                                     RANGE_SEQUENCE_STEP_PRE_RANGE +
                                     RANGE_SEQUENCE_STEP_FINAL_RANGE)) {
-    Serial.println("sensor boot check failed5");
+    Serial.println("sensor boot check failed: 5");
     while (true);
   }
   if(!perform_ref_calibration()) {
-    Serial.println("sensor boot check failed6");
+    Serial.println("sensor boot check failed: 6");
     while (true);
   }
 

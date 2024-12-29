@@ -22,8 +22,8 @@ int allLedPins[9] = {AR, AY, AG, BR, BY, BG, CR, CY, CG};
 
 void initLed();
 void trafficLightTask(void *pvParameters);
-bool green(int road);
-bool turnOffAll();
+void green(int road);
+void turnOffAll();
 
 void initLed() {
   for (int i = 0; i < 9; i++) {
@@ -43,12 +43,12 @@ void trafficLightTask(void *pvParameters) {
 
     green(currentRoadGo);
 
-    Serial.println("Suspending task after cycle");
+    // Serial.println("Suspending task after cycle");
     vTaskSuspend(NULL);  // Suspend this task until explicitly resumed
   }
 }
 
-bool green(int road) {
+void green(int road) {
   switch(road) {
     case 0:
       turnOffAll();
@@ -61,7 +61,7 @@ bool green(int road) {
       digitalWrite(AG, HIGH); // now let a go
       digitalWrite(AY, LOW);
       digitalWrite(AR, LOW);
-      Serial.println("current road A");
+      // Serial.println("current road A");
       break;
     case 1:
       turnOffAll();
@@ -74,7 +74,7 @@ bool green(int road) {
       digitalWrite(BG, HIGH); // let b go
       digitalWrite(BY, LOW);
       digitalWrite(BR, LOW);
-      Serial.println("current road B");
+      // Serial.println("current road B");
       break;
     case 2:
       turnOffAll();
@@ -87,7 +87,7 @@ bool green(int road) {
       digitalWrite(CG, HIGH); // let c go
       digitalWrite(CY, LOW);
       digitalWrite(CR, LOW);
-      Serial.println("current road C");
+      // Serial.println("current road C");
       break;
     default:
       Serial.println("program should not reach here");
@@ -95,7 +95,7 @@ bool green(int road) {
   }
 }
 
-bool turnOffAll() {
+void turnOffAll() {
   for (int i = 0; i < 9; i++) {
     digitalWrite(allLedPins[i], LOW);
   }
@@ -103,10 +103,10 @@ bool turnOffAll() {
 
 bool toggleLight() {
   if (trafficLightTaskHandle != NULL) {
-    Serial.println("Resuming traffic light task...");
+    // Serial.println("Resuming traffic light task...");
     vTaskResume(trafficLightTaskHandle);
     return true;  // Task resumed successfully
   }
-  Serial.println("Failed to resume task.");
+  // Serial.println("Failed to resume task.");
   return false;  // Task handle is invalid
 }
