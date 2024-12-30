@@ -33,15 +33,11 @@ void initLed() {
 }
 
 void trafficLightTask(void *pvParameters) {
-  int currentRoadGo = 2;
+  int currentRoad = 0;
   while (1) {
-    if (currentRoadGo < 2) {
-      currentRoadGo++;
-    } else {
-      currentRoadGo = 0;
-    }
+    green(currentRoad);
 
-    green(currentRoadGo);
+    currentRoad = (currentRoad + 1) % 3;
 
     // Serial.println("Suspending task after cycle");
     vTaskSuspend(NULL);  // Suspend this task until explicitly resumed
@@ -72,7 +68,6 @@ void green(int road) {
       digitalWrite(CR, HIGH);
       digitalWrite(CY, LOW);
       digitalWrite(AG, HIGH); // now let a go
-      digitalWrite(AY, LOW);
       digitalWrite(AR, LOW);
       // Serial.println("current road A");
       break;
@@ -86,7 +81,6 @@ void green(int road) {
       digitalWrite(AY, LOW);
       digitalWrite(AR, HIGH);
       digitalWrite(BG, HIGH); // let b go
-      digitalWrite(BY, LOW);
       digitalWrite(BR, LOW);
       // Serial.println("current road B");
       break;
@@ -100,7 +94,6 @@ void green(int road) {
       digitalWrite(BY, LOW);
       digitalWrite(BR, HIGH);
       digitalWrite(CG, HIGH); // let c go
-      digitalWrite(CY, LOW);
       digitalWrite(CR, LOW);
       // Serial.println("current road C");
       break;
@@ -114,14 +107,4 @@ void turnOffAll() {
   for (int i = 0; i < 9; i++) {
     digitalWrite(allLedPins[i], LOW);
   }
-}
-
-bool toggleLight() {
-  if (trafficLightTaskHandle != NULL) {
-    // Serial.println("Resuming traffic light task...");
-    vTaskResume(trafficLightTaskHandle);
-    return true;  // Task resumed successfully
-  }
-  // Serial.println("Failed to resume task.");
-  return false;  // Task handle is invalid
 }
