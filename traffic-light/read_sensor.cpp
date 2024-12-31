@@ -26,37 +26,23 @@ void countCarTaskTOF(void *pvParameters) {
 
       if (range < car_threshold) {
         if (last_state[sensorNum - 1] == 0) {
-          if (sensorNum % 2) // enter road sensor
-            ++car_count[(sensorNum - 1) / 2];
-          else // exit road sensor
-            --car_count[(sensorNum - 1) / 2];
+          if (sensorNum % 2) ++car_count[(sensorNum - 1) / 2];
+          else --car_count[(sensorNum - 1) / 2];
         car_count[(sensorNum - 1) / 2] = max(0, car_count[(sensorNum - 1) / 2]);
         last_state[sensorNum - 1] = 1;
         }
       }
-      else
-        last_state[sensorNum - 1] = 0;
+      else last_state[sensorNum - 1] = 0;
 
-	  if (currentTime - lastPrintTime >= 100) {
-      Serial.print(roadToGo);
-      Serial.print(",");
-      Serial.print(car_count[0]);
-      Serial.print(",");
-      Serial.print(car_count[1]);
-      Serial.print(",");
-      Serial.print(car_count[2]);
-      Serial.print(",");
-      Serial.print(currentTime - startTime);
-      Serial.print(",");      
-      Serial.print(min(min_green_time + car_count[roadToGo] * 2000, 45000));
-      Serial.println();
-      lastPrintTime = currentTime;
-	  }
-
-      sensorNum++;
-      if(sensorNum == 7) {
-        sensorNum = 1;
+      if (currentTime - lastPrintTime >= 100) {
+        Serial.print(roadToGo); Serial.print(",");
+        Serial.print(car_count[0]); Serial.print(",");
+        Serial.print(car_count[1]); Serial.print(",");
+        Serial.print(car_count[2]); Serial.print(",");
+        Serial.println();
+        lastPrintTime = currentTime;
       }
+      sensorNum = sensorNum % 6 + 1;
     }
 
     // 5s base + 2s per car, max 45s

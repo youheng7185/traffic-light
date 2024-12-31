@@ -8,15 +8,12 @@
 TaskHandle_t trafficLightTaskHandle = NULL;
 
 void setup() {
-  // put your setup code here, to run once:
+  unsigned long startTime = millis();
+
   Serial.begin(115200);
   Wire.setClock(400000);
-
-  unsigned long startTime = millis();
   initLed();
-  // red while init sensor
-  red_all();
-
+  red_all(); // red while init sensor
   // init sensor
   if(!vl53l0x_init()){
     Serial.println("fail init multiple sensor");
@@ -25,9 +22,8 @@ void setup() {
     Serial.println("success init multiple sensor");
   }
 
-  while (millis() - startTime < 1000);
-
-  offCR();
+  while (millis() - startTime < 1000); // "delay" 1s
+  offCR(); // turn off red line on lane C
 
   // start rtos tasks
   // tasks to count car
