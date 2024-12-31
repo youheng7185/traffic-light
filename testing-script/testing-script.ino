@@ -5,7 +5,7 @@
 #define SENSOR_COUNT 6
 
 // Define the GPIO pins for XSHUT
-int xshutPins[SENSOR_COUNT] = {A0, A1, A2, A3, 2, 3};
+int xshutPins[SENSOR_COUNT] = {A0, A1, A2, A3, 13, 12};
 
 // Unique I2C addresses for each sensor
 uint8_t sensorAddresses[SENSOR_COUNT] = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35};

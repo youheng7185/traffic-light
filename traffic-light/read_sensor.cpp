@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 const int car_threshold = 100; // to be changed accordingly
-const int32_t min_green_time = 5000;
+const int32_t min_green_time = 7500;
 
 void countCarTaskTOF(void *pvParameters) {
   unsigned long startTime = millis(); // Record the start time of the loop
@@ -48,7 +48,7 @@ void countCarTaskTOF(void *pvParameters) {
       Serial.print(",");
       Serial.print(currentTime - startTime);
       Serial.print(",");      
-      Serial.print(min(min_green_time + car_count[roadToGo] * 2000, 30000));
+      Serial.print(min(min_green_time + car_count[roadToGo] * 2000, 45000));
       Serial.println();
       lastPrintTime = currentTime;
 	  }
@@ -59,8 +59,8 @@ void countCarTaskTOF(void *pvParameters) {
       }
     }
 
-    // 6s base + 2s per car, max 30s
-    if (currentTime - startTime > min(min_green_time + car_count[roadToGo] * 2000, 30000)) {
+    // 5s base + 2s per car, max 45s
+    if (currentTime - startTime > min(min_green_time + car_count[roadToGo] * 2000, 45000)) {
       vTaskResume(trafficLightTaskHandle);
       roadToGo = (roadToGo + 1) % 3;
       startTime = millis();
