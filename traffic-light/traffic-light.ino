@@ -12,13 +12,22 @@ void setup() {
   Serial.begin(115200);
   Wire.setClock(400000);
 
+  unsigned long startTime = millis();
   initLed();
+  // red while init sensor
+  red_all();
+
+  // init sensor
   if(!vl53l0x_init()){
     Serial.println("fail init multiple sensor");
     while(1);
   } else {
     Serial.println("success init multiple sensor");
   }
+
+  while (millis() - startTime < 1000);
+
+  offCR();
 
   // start rtos tasks
   // tasks to count car

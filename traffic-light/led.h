@@ -5,6 +5,8 @@
 
 void initLed();
 void trafficLightTask(void *pvParameters);
+void red_all();
+void offCR();
 
 extern TaskHandle_t trafficLightTaskHandle;
 

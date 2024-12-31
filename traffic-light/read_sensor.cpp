@@ -6,12 +6,12 @@
 #include <Arduino.h>
 
 const int car_threshold = 100; // to be changed accordingly
-const int min_green_time = 5000;
+const int32_t min_green_time = 5000;
 
 void countCarTaskTOF(void *pvParameters) {
   unsigned long startTime = millis(); // Record the start time of the loop
   unsigned long lastPrintTime = startTime;
-  int car_count[3] = {0};
+  int32_t car_count[3] = {0, 10, 20};
   bool last_state[6] = {0};
 
   int roadToGo = 0;
@@ -38,13 +38,17 @@ void countCarTaskTOF(void *pvParameters) {
         last_state[sensorNum - 1] = 0;
 
 	  if (currentTime - lastPrintTime >= 100) {
-      Serial.print(currentTime);
+      Serial.print(roadToGo);
       Serial.print(",");
       Serial.print(car_count[0]);
       Serial.print(",");
       Serial.print(car_count[1]);
       Serial.print(",");
       Serial.print(car_count[2]);
+      Serial.print(",");
+      Serial.print(currentTime - startTime);
+      Serial.print(",");      
+      Serial.print(min(min_green_time + car_count[roadToGo] * 2000, 30000));
       Serial.println();
       lastPrintTime = currentTime;
 	  }
@@ -56,10 +60,10 @@ void countCarTaskTOF(void *pvParameters) {
     }
 
     // 6s base + 2s per car, max 30s
-    if (currentTime - startTime > min(min_green_time + max(0, car_count[roadToGo]) * 2000, 30000)) {
+    if (currentTime - startTime > min(min_green_time + car_count[roadToGo] * 2000, 30000)) {
       vTaskResume(trafficLightTaskHandle);
-      startTime = millis();
       roadToGo = (roadToGo + 1) % 3;
+      startTime = millis();
     }
 
     vTaskDelay(100 / portTICK_PERIOD_MS);

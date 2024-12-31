@@ -47,9 +47,9 @@ void trafficLightTask(void *pvParameters) {
 void blink_green(uint8_t pin)
 {
   for (int i = 0; i < 3; ++i) {
-    digitalWrite(pin, HIGH);
-    vTaskDelay(250/portTICK_PERIOD_MS);
     digitalWrite(pin, LOW);
+    vTaskDelay(250/portTICK_PERIOD_MS);
+    digitalWrite(pin, HIGH);
     vTaskDelay(250/portTICK_PERIOD_MS);
   }
 }
@@ -57,17 +57,20 @@ void blink_green(uint8_t pin)
 void green(int road) {
   switch(road) {
     case 0:
+      // previous lane blink green
       blink_green(CG);
+      // reset
       turnOffAll();
-      // green to yellow
+      // previous lane turns yellow
       digitalWrite(CY, HIGH);
-      digitalWrite(BR, HIGH); // keep b stop
-      digitalWrite(AR, HIGH); // keep a stop first
-      vTaskDelay(1000 / portTICK_PERIOD_MS); // yellow transition 1s
-      // green next lane
+      digitalWrite(BR, HIGH);
+      digitalWrite(AR, HIGH);
+      vTaskDelay(1000 / portTICK_PERIOD_MS); // wait 1s
+      // previous lane turns red
       digitalWrite(CR, HIGH);
       digitalWrite(CY, LOW);
-      digitalWrite(AG, HIGH); // now let a go
+      // current lane turns green
+      digitalWrite(AG, HIGH);
       digitalWrite(AR, LOW);
       // Serial.println("current road A");
       break;
@@ -107,4 +110,15 @@ void turnOffAll() {
   for (int i = 0; i < 9; i++) {
     digitalWrite(allLedPins[i], LOW);
   }
+}
+
+void red_all() {
+  turnOffAll();
+  digitalWrite(AR, HIGH);
+  digitalWrite(BR, HIGH);
+  digitalWrite(CR, HIGH);
+}
+
+void offCR() {
+  digitalWrite(CR, LOW);
 }
